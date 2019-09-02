@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[28,)"
+#issueTrackerURL="http://my.issue.tracker/"
+
+[[mods]]
+	modId="puddingmod"
+	version="${file.jarVersion}"
+	displayName="Pudding Mod"
+	# updateJSONURL="http://myurl.me/"
+	# displayURL="https://themcbros.tk/puddingmod/"
+	logoFile="puddingmod.png"
+	# credits="Thanks for this example mod goes to Java"
+	authors="TheMCBrothers"
+	
+	description='''
+	This mod adds pudding to minecraft!
+	'''
+
+[[dependencies.puddingmod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[28.0.76,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.puddingmod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.14.4]"
+    ordering="NONE"
+    side="BOTH"
