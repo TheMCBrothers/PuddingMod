@@ -19,7 +19,7 @@ public class ModItems {
 	private static final List<Item> ITEMS = Lists.newArrayList();
 	
 	public static final Item RAW_PUDDING = register("raw_pudding", new Item(new Item.Properties().food(FoodList.RAW_PUDDING).group(PuddingMod.ITEM_GROUP)));
-	public static final Item PUDDING = register("pudding", new SoupItem(new Item.Properties().group(PuddingMod.ITEM_GROUP).food(FoodList.PUDDING)));
+	public static final Item PUDDING = register("pudding", new SoupItem(new Item.Properties().group(PuddingMod.ITEM_GROUP).food(FoodList.PUDDING).maxStackSize(1)));
 	public static final Item PUDDING_BUCKET = register("pudding_bucket", new BucketItem(ModFluids.PUDDING, new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(PuddingMod.ITEM_GROUP)));
 	
 	private static Item register(String registryName, Item item) {

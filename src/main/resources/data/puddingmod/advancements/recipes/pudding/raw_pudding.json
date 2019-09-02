@@ -1,26 +1,16 @@
 {
 	"rewards": {
 		"recipes": [
-			"puddingmod:pudding"
+			"puddingmod:pudding_uncompress"
 		]
 	},
 	"criteria": {
-		"has_pudding": {
+		"has_pudding_block": {
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
 					{
-						"item": "puddingmod:pudding"
-					}
-				]
-			}
-		},
-		"has_bowl": {
-			"trigger": "minecraft:inventory_changed",
-			"conditions": {
-				"items": [
-					{
-						"item": "minecraft:bowl"
+						"item": "puddingmod:pudding_block"
 					}
 				]
 			}
@@ -38,14 +28,13 @@
 		"has_the_recipe": {
 			"trigger": "minecraft:recipe_unlocked",
 			"conditions": {
-				"recipe": "puddingmod:pudding"
+				"recipe": "puddingmod:pudding_uncompress"
 			}
 		}
 	},
 	"requirements": [
 		[
-			"has_pudding",
-			"has_bowl",
+			"has_pudding_block",
 			"has_raw_pudding",
 			"has_the_recipe"
 		]
