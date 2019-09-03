@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "puddingmod:pudding_block"
+		}
+	],
+	"result": {
+		"item": "puddingmod:raw_pudding",
+		"count": 9
+	}
+}

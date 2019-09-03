@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "puddingmod",
+	"version": "${version}",
+	"name": "Pudding Mod",
+	"description": "This is a mod that adds pudding to minecraft",
+	"authors": [
+		"TheMCBrothers"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/modid/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"tk.themcbros.puddingmod.PuddingMod"
+		]
+	},
+	"mixins": [
+		"modid.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.4.0",
+		"fabric": "*"
+	},
+	"suggests": {
+		"flamingo": "*"
+	}
+}
