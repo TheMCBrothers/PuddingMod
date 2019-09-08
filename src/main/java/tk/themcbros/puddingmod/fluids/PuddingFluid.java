@@ -16,7 +16,6 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.IProperty;
 import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
@@ -35,6 +34,7 @@ import tk.themcbros.puddingmod.PuddingMod;
 import tk.themcbros.puddingmod.init.ModBlocks;
 import tk.themcbros.puddingmod.init.ModFluids;
 import tk.themcbros.puddingmod.init.ModItems;
+import tk.themcbros.puddingmod.tags.ModTags;
 
 public abstract class PuddingFluid extends FlowingFluid {
 
@@ -66,58 +66,58 @@ public abstract class PuddingFluid extends FlowingFluid {
             }
         } else if (random.nextInt(10) == 0) {
             world.addParticle(ParticleTypes.UNDERWATER, (double)((float)pos.getX() + random.nextFloat()), (double)((float)pos.getY() + random.nextFloat()), (double)((float)pos.getZ() + random.nextFloat()), 0.0D, 0.0D, 0.0D);
-        }
+		}
 
-    }
+	}
 
-    @Nullable
-    @OnlyIn(Dist.CLIENT)
-    public IParticleData getDripParticleData() {
-        return ParticleTypes.DRIPPING_WATER;
-    }
+	@Nullable
+	@OnlyIn(Dist.CLIENT)
+	public IParticleData getDripParticleData() {
+		return ParticleTypes.DRIPPING_WATER;
+	}
 
-    protected boolean canSourcesMultiply() {
-        return true;
-    }
+	protected boolean canSourcesMultiply() {
+		return true;
+	}
 
-    protected void beforeReplacingBlock(IWorld world, BlockPos pos, BlockState state) {
-        TileEntity tileEntity = state.hasTileEntity() ? world.getTileEntity(pos) : null;
-        Block.spawnDrops(state, world.getWorld(), pos, tileEntity);
-    }
+	protected void beforeReplacingBlock(IWorld world, BlockPos pos, BlockState state) {
+		TileEntity tileEntity = state.hasTileEntity() ? world.getTileEntity(pos) : null;
+		Block.spawnDrops(state, world.getWorld(), pos, tileEntity);
+	}
 
-    public int getSlopeFindDistance(IWorldReader world) {
-        return 4;
-    }
+	public int getSlopeFindDistance(IWorldReader world) {
+		return 4;
+	}
 
-    public BlockState getBlockState(IFluidState state) {
-        return (BlockState) ModBlocks.PUDDING.getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
-    }
+	public BlockState getBlockState(IFluidState state) {
+		return (BlockState) ModBlocks.PUDDING.getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
+	}
 
-    public boolean isEquivalentTo(Fluid fluid) {
-        return fluid == ModFluids.PUDDING || fluid == ModFluids.FLOWING_PUDDING;
-    }
+	public boolean isEquivalentTo(Fluid fluid) {
+		return fluid == ModFluids.PUDDING || fluid == ModFluids.FLOWING_PUDDING;
+	}
 
-    public int getLevelDecreasePerBlock(IWorldReader world) {
-        return 1;
-    }
+	public int getLevelDecreasePerBlock(IWorldReader world) {
+		return 1;
+	}
 
-    public int getTickRate(IWorldReader world) {
-        return 5;
-    }
+	public int getTickRate(IWorldReader world) {
+		return 5;
+	}
 
-    public boolean func_215665_a(IFluidState state, IBlockReader world, BlockPos pos, Fluid fluid, Direction direction) {
-        return direction == Direction.DOWN && !fluid.isIn(FluidTags.WATER);
-    }
+	public boolean func_215665_a(IFluidState state, IBlockReader world, BlockPos pos, Fluid fluid, Direction direction) {
+		return direction == Direction.DOWN && !ModTags.getFluidTag(ModTags.Fluids.PUDDING).contains(fluid);
+	}
 
-    protected float getExplosionResistance() {
-        return 100.0F;
-    }
+	protected float getExplosionResistance() {
+		return 100.0F;
+	}
     
     @Override
     protected FluidAttributes createAttributes(Fluid fluid) {
     	return FluidAttributes.builder("pudding", 
     			new ResourceLocation(PuddingMod.MOD_ID, "block/pudding_still"), 
-    			new ResourceLocation(PuddingMod.MOD_ID, "block/pudding_flow"))
+    			new ResourceLocation(PuddingMod.MOD_ID, "block/pudding_still"))
     			.luminosity(2)
     			.temperature(290)
     			.color(0xe0c363)
@@ -127,35 +127,35 @@ public abstract class PuddingFluid extends FlowingFluid {
     			.build();
     }
 
-    public static class Flowing extends PuddingFluid {
-        public Flowing() {
-        }
+	public static class Flowing extends PuddingFluid {
+		public Flowing() {
+		}
 
-        protected void fillStateContainer(Builder<Fluid, IFluidState> builder) {
-            super.fillStateContainer(builder);
-            builder.add(new IProperty[]{LEVEL_1_8});
-        }
+		protected void fillStateContainer(Builder<Fluid, IFluidState> builder) {
+			super.fillStateContainer(builder);
+			builder.add(new IProperty[] { LEVEL_1_8 });
+		}
 
-        public int getLevel(IFluidState state) {
-            return (Integer)state.get(LEVEL_1_8);
-        }
+		public int getLevel(IFluidState state) {
+			return (Integer) state.get(LEVEL_1_8);
+		}
 
-        public boolean isSource(IFluidState state) {
-            return false;
-        }
-    }
+		public boolean isSource(IFluidState state) {
+			return false;
+		}
+	}
 
-    public static class Source extends PuddingFluid {
-        public Source() {
-        }
+	public static class Source extends PuddingFluid {
+		public Source() {
+		}
 
-        public int getLevel(IFluidState state) {
-            return 8;
-        }
+		public int getLevel(IFluidState state) {
+			return 8;
+		}
 
-        public boolean isSource(IFluidState state) {
-            return true;
-        }
-    }
+		public boolean isSource(IFluidState state) {
+			return true;
+		}
+	}
 
 }
