@@ -1,0 +1,56 @@
+{
+	"rewards": {
+		"recipes": [
+			"puddingmod:pudding_bucket"
+		]
+	},
+	"criteria": {
+		"has_pudding_bucket": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "puddingmod:pudding_bucket"
+					}
+				]
+			}
+		},
+		"has_bucket": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:bucket"
+					}
+				]
+			}
+		},
+		"has_raw_pudding": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "puddingmod:raw_pudding",
+						"count": {
+							"min": 4
+						}
+					}
+				]
+			}
+		},
+		"has_the_recipe": {
+			"trigger": "minecraft:recipe_unlocked",
+			"conditions": {
+				"recipe": "puddingmod:pudding_bucket"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_pudding_bucket",
+			"has_bucket",
+			"has_raw_pudding",
+			"has_the_recipe"
+		]
+	]
+}

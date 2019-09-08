@@ -8,11 +8,12 @@
 		"TheMCBrothers"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/TheMCBrothers/PuddingMod",
+		"issues": "https://github.com/TheMCBrothers/PuddingMod/issues",
+		"wiki": "https://github.com/TheMCBrothers/PuddingMod/wiki"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
+	"icon": "assets/puddingmod/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [

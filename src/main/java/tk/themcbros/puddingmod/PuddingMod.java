@@ -9,7 +9,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import tk.themcbros.puddingmod.init.ModBlocks;
-import tk.themcbros.puddingmod.init.ModFluids;
 import tk.themcbros.puddingmod.init.ModItems;
 
 public class PuddingMod implements ModInitializer {
@@ -22,7 +21,6 @@ public class PuddingMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Initalizing {} ...", MOD_ID);
-		new ModFluids();
 		new ModBlocks();
 		new ModItems();
 	}

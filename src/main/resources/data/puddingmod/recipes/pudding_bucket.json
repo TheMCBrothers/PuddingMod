@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:bucket"
+		},
+		{
+			"item": "puddingmod:raw_pudding"
+		},
+		{
+			"item": "puddingmod:raw_pudding"
+		},
+		{
+			"item": "puddingmod:raw_pudding"
+		},
+		{
+			"item": "puddingmod:raw_pudding"
+		}
+	],
+	"result": {
+		"item": "puddingmod:pudding_bucket"
+	}
+}
