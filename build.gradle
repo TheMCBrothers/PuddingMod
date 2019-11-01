@@ -8,30 +8,25 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
+
+plugins {
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
+}
+
 apply plugin: 'net.minecraftforge.gradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0.1'
 group = 'tk.themcbros.puddingmod' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'puddingmod'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    // The mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   Snapshot are built nightly.
-    // stable_#            Stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'snapshot', version: '20190908-1.14.3'
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    mappings channel: 'snapshot', version: "${mcp_mappings}"
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
     runs {
         client {
             workingDirectory project.file('run')
@@ -74,7 +69,7 @@ minecraft {
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'puddingmod', '--all', '--output', file('src/generated/resources/')
 
             mods {
                 puddingmod {
@@ -85,38 +80,177 @@ minecraft {
     }
 }
 
+repositories {
+    maven { // JEI
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        name = "Hwyla REPO"
+        url = "https://tehnut.info/maven/"
+    }
+}
+
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.4-28.0.95'
+    // Minecraft Forge
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    // JEI
+    compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+
+    // Hwyla
+    compile fg.deobf("mcp.mobius.waila:Hwyla:${hwyla_version}")
+
 }
 
 jar {
+    appendix = "${project.minecraft_version}"
     manifest {
         attributes([
-            "Specification-Title": "puddingmod",
-            "Specification-Vendor": "themcbrothers",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"themcbrothers",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Specification-Title": "puddingmod",
+                "Specification-Vendor": "themcbrothers",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"themcbrothers",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
 
-def reobfFile = file("$buildDir/reobfJar/output.jar")
-def reobfArtifact = artifacts.add('default', reobfFile) {
-    type 'jar'
-    builtBy 'reobfJar'
+javadoc {
+    failOnError = false
 }
+
+task deobfJar(type: Jar) {
+    appendix = "${project.minecraft_version}"
+    classifier = 'deobf'
+    from sourceSets.main.output
+}
+
+task sourcesJar(type: Jar) {
+    appendix = "${project.minecraft_version}"
+    classifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    appendix = "${project.minecraft_version}"
+    classifier = 'javadoc'
+    from javadoc.getDestinationDir()
+}
+
+task apiJar(type: Jar) {
+    appendix = "${project.minecraft_version}"
+    classifier = 'api'
+    include 'tk/themcbros/puddingmod.api/**'
+}
+
+artifacts {
+    if (project.hasProperty('doDeobfJar')) {
+        archives deobfJar
+    }
+    if (project.hasProperty('doSourceJar')) {
+        archives sourcesJar
+    }
+    if (project.hasProperty('doJavadocJar')) {
+        archives javadocJar
+    }
+    if (project.hasProperty('doApiJar')) {
+        archives apiJar
+    }
+}
+
 publishing {
+    tasks.publish.dependsOn 'build'
     publications {
         mavenJava(MavenPublication) {
-            artifact reobfArtifact
+            from components.java
+            //artifact apiJar
         }
     }
+
     repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
+        if (project.hasProperty('mavendir')) {
+            maven { url mavendir }
+        } else {
+            mavenLocal()
         }
+    }
+}
+
+String getChangelogText() {
+    def changelogFile = file('changelog.txt')
+    String str = ''
+    int lineCount = 0
+    boolean done = false
+    changelogFile.eachLine {
+        if (done || it == null) {
+            return
+        }
+        if (it.size() > 1) {
+            def temp = it
+            if (lineCount == 0) {
+                temp = "${modname} ${version}"
+                temp = "<h2>$temp</h2>"
+            } else if (it.startsWith('-')) {
+                temp = "&nbsp;&nbsp;&nbsp;$temp"
+                temp = temp.replaceAll("(\\S+\\/\\S+)#([0-9]+)\\b", "<a href=\"https://github.com/\$1/issues/\$2\">\$0</a>");
+                temp = temp.replaceAll("#([0-9]+)\\b(?!<\\/a>)", "<a href=\"https://github.com/$github_project/issues/\$1\">\$0</a>");
+            } else {
+                temp = "<h4>$temp</h4>"
+            }
+            str += "$temp<br/>"
+            lineCount++
+            return
+        } else {
+            done = true
+        }
+    }
+    return str
+}
+
+class Secrets {
+    def data = null
+
+    def getProperty(String key) {
+        return data ? data[key] : ''
+    }
+}
+
+import groovy.json.JsonSlurper
+
+def secretFile
+if (System.getenv().SECRET_FILE) {
+    secretFile = file System.getenv().SECRET_FILE
+} else {
+    secretFile = file 'secret.json'
+}
+
+project.ext.secret = new Secrets()
+if (secretFile.exists()) {
+    secretFile.withReader {
+        project.ext.secret.data = new JsonSlurper().parse it
+    }
+}
+
+curseforge {
+    if (project.hasProperty('curse_type') && project.hasProperty('projectId')) {
+        apiKey = secret.curseforge_key
+    }
+
+    project {
+        id = project.projectId
+        changelog = getChangelogText()
+        changelogType = 'html'
+        releaseType = project.curse_type
+        addGameVersion(project.minecraft_version)
+        mainArtifact(jar) {
+            displayName = "${modname} - ${version}"
+            relations {
+                optionalLibrary 'themcbros-useless-mod'
+            }
+        }
+        addArtifact apiJar
     }
 }

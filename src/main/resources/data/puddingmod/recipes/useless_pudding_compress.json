@@ -1,0 +1,18 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "uselessmod"
+    }
+  ],
+  "type": "uselessmod:compressing",
+  "ingredient": {
+    "item": "puddingmod:raw_pudding",
+    "count": 9
+  },
+  "result:": {
+    "item": "puddingmod:pudding_block",
+    "count": 1
+  },
+  "compresstime": 150
+}

@@ -1,40 +1,46 @@
 package tk.themcbros.puddingmod.init;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ObjectHolder;
 import tk.themcbros.puddingmod.PuddingMod;
-import tk.themcbros.puddingmod.fluids.PuddingFluid;
 
+import java.util.List;
+
+@ObjectHolder(PuddingMod.MOD_ID)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = PuddingMod.MOD_ID)
 public class ModFluids {
 
 	private static final List<Fluid> FLUIDS = Lists.newArrayList();
 	
-	public static final FlowingFluid FLOWING_PUDDING = (FlowingFluid) register("flowing_pudding", new PuddingFluid.Flowing());
-	public static final FlowingFluid PUDDING = (FlowingFluid) register("pudding", new PuddingFluid.Source());
+	public static final FlowingFluid FLOWING_PUDDING;
+	public static final FlowingFluid PUDDING;
+
+	static {
+		ForgeFlowingFluid.Properties puddingProperties = new ForgeFlowingFluid.Properties(() -> ModFluids.PUDDING, () -> ModFluids.FLOWING_PUDDING,
+				FluidAttributes.builder(PuddingMod.location("block/pudding_still"), PuddingMod.location("block/pudding_flow"))
+						.density(1200).gaseous().luminosity(15).translationKey(ModBlocks.PUDDING.getTranslationKey())).block(() -> ModBlocks.PUDDING).bucket(() -> ModItems.PUDDING_BUCKET)
+				.levelDecreasePerBlock(2).explosionResistance(1000f);
+		FLOWING_PUDDING = register("flowing_pudding", new ForgeFlowingFluid.Flowing(puddingProperties));
+		PUDDING = register("pudding", new ForgeFlowingFluid.Source(puddingProperties));
+	}
 	
-	private static Fluid register(String registryName, Fluid fluid) {
-		fluid.setRegistryName(new ResourceLocation(PuddingMod.MOD_ID, registryName));
+	private static <T extends Fluid> T register(String registryName, T fluid) {
+		fluid.setRegistryName(PuddingMod.location(registryName));
 		FLUIDS.add(fluid);
 		return fluid;
 	}
-	
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = PuddingMod.MOD_ID)
-	public static class Registration {
-		@SubscribeEvent
-		public static void registerFluids(final RegistryEvent.Register<Fluid> event) {
-			FLUIDS.forEach(fluid -> {
-				event.getRegistry().register(fluid);
-			});
-			PuddingMod.LOGGER.debug("Registered fluids");
-		}
+
+	@SubscribeEvent
+	public static void registerFluids(final RegistryEvent.Register<Fluid> event) {
+		FLUIDS.forEach(event.getRegistry()::register);
+		PuddingMod.LOGGER.debug("Registered fluids");
 	}
 	
 }

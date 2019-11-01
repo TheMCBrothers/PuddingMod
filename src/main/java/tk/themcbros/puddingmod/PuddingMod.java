@@ -1,5 +1,7 @@
 package tk.themcbros.puddingmod;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +19,7 @@ public class PuddingMod {
 	public static final String MOD_ID = "puddingmod";
 	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 	
-	public static final ItemGroup ITEM_GROUP = new ItemGroup("puddingmod") {
+	public static final ItemGroup ITEM_GROUP = new ItemGroup(MOD_ID) {
 		@Override
 		public ItemStack createIcon() {
 			return new ItemStack(ModItems.PUDDING);
@@ -28,9 +30,11 @@ public class PuddingMod {
 	public static CommonProxy proxy;
 
 	public PuddingMod() {
-
 		instance = this;
 		proxy = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+	}
 
+	public static ResourceLocation location(String pathIn) {
+		return new ResourceLocation(MOD_ID, pathIn);
 	}
 }
