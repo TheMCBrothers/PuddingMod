@@ -1,3 +1,2 @@
-1.1.0:
-- First release
-- Updated to latest forge version (28.1.78)
+2.0.0:
+- Updated to 1.16.1
