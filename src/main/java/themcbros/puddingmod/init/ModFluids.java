@@ -37,6 +37,8 @@ public class ModFluids {
 		return fluid;
 	}
 
+	public static void init() {} // do nothing
+
 	@SubscribeEvent
 	public static void registerFluids(final RegistryEvent.Register<Fluid> event) {
 		FLUIDS.forEach(event.getRegistry()::register);

@@ -13,7 +13,7 @@ import themcbros.puddingmod.PuddingMod;
 
 public class ModBlocks {
 
-	private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PuddingMod.MOD_ID);
+	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PuddingMod.MOD_ID);
 	
 	public static final RegistryObject<SlimeBlock> PUDDING_BLOCK = BLOCKS.register("pudding_block",
 			() -> new SlimeBlock(Block.Properties.create(Material.CLAY, MaterialColor.YELLOW).sound(SoundType.SLIME).hardnessAndResistance(0.2f)));
