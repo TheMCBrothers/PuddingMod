@@ -1,11 +1,11 @@
-package tk.themcbros.puddingmod.init;
+package themcbros.puddingmod.init;
 
 import com.google.common.collect.Lists;
 import net.minecraft.item.*;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import tk.themcbros.puddingmod.PuddingMod;
+import themcbros.puddingmod.PuddingMod;
 
 import java.util.List;
 

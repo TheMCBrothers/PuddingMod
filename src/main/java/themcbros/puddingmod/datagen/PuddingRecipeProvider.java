@@ -1,10 +1,10 @@
-package tk.themcbros.puddingmod.datagen;
+package themcbros.puddingmod.datagen;
 
 import net.minecraft.data.*;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
-import tk.themcbros.puddingmod.init.ModItems;
+import themcbros.puddingmod.init.ModItems;
 
 import java.util.function.Consumer;
 

@@ -1,4 +1,4 @@
-package tk.themcbros.puddingmod.init;
+package themcbros.puddingmod.init;
 
 import net.minecraft.item.Food;
 

@@ -1,8 +1,8 @@
-package tk.themcbros.puddingmod.proxy;
+package themcbros.puddingmod.proxy;
 
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import tk.themcbros.puddingmod.PuddingMod;
+import themcbros.puddingmod.PuddingMod;
 
 public class ServerProxy extends CommonProxy {
 
