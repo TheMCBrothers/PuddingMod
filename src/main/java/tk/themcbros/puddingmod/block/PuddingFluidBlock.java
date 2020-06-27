@@ -1,10 +1,10 @@
 package tk.themcbros.puddingmod.block;
 
 import net.minecraft.block.FluidBlock;
-import net.minecraft.fluid.BaseFluid;
+import net.minecraft.fluid.FlowableFluid;
 
 public class PuddingFluidBlock extends FluidBlock {
-    public PuddingFluidBlock(BaseFluid fluid, Settings settings) {
+    public PuddingFluidBlock(FlowableFluid fluid, Settings settings) {
         super(fluid, settings);
     }
 }

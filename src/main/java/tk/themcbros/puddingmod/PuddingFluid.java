@@ -2,24 +2,23 @@ package tk.themcbros.puddingmod;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
-import net.minecraft.fluid.BaseFluid;
+import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.WaterFluid;
 import net.minecraft.item.Item;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import tk.themcbros.puddingmod.init.ModBlocks;
 import tk.themcbros.puddingmod.init.ModFluids;
 import tk.themcbros.puddingmod.init.ModItems;
 import tk.themcbros.puddingmod.init.ModTags;
 
-public abstract class PuddingFluid extends BaseFluid {
+public abstract class PuddingFluid extends FlowableFluid {
     @Override
     public Fluid getFlowing() {
         return ModFluids.FLOWING_PUDDING;
@@ -36,13 +35,8 @@ public abstract class PuddingFluid extends BaseFluid {
     }
 
     @Override
-    protected void beforeBreakingBlock(IWorld iWorld, BlockPos blockPos, BlockState blockState) {
+    protected void beforeBreakingBlock(WorldAccess world, BlockPos pos, BlockState state) {
 
-    }
-
-    @Override
-    protected int method_15733(WorldView worldView) {
-        return 0;
     }
 
     @Override
@@ -57,7 +51,7 @@ public abstract class PuddingFluid extends BaseFluid {
 
     @Override
     protected boolean canBeReplacedWith(FluidState fluidState, BlockView blockView, BlockPos blockPos, Fluid fluid, Direction direction) {
-        return direction == Direction.DOWN && !fluidState.matches(ModTags.Fluids.PUDDING);
+        return direction == Direction.DOWN && !fluidState.isIn(ModTags.Fluids.PUDDING);
     }
 
     @Override

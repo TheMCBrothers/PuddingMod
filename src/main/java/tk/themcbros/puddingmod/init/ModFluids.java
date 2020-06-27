@@ -1,6 +1,6 @@
 package tk.themcbros.puddingmod.init;
 
-import net.minecraft.fluid.BaseFluid;
+import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -9,8 +9,8 @@ import tk.themcbros.puddingmod.PuddingMod;
 
 public class ModFluids {
 
-    public static final BaseFluid PUDDING;
-    public static final BaseFluid FLOWING_PUDDING;
+    public static final FlowableFluid PUDDING;
+    public static final FlowableFluid FLOWING_PUDDING;
 
     static {
         PUDDING = register("pudding", new PuddingFluid.Still());
